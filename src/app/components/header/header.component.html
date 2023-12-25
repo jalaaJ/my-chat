@@ -1,1 +1,15 @@
-<p>header works!</p>
+<div class="header">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+          <span class="header__spacer">My-Chat</span>
+          <button *ngIf="!(isLoggedIn); else loggedIn" (click)="signInWithGoogle()" mat-raised-button>
+            Login
+          </button>
+          <ng-template #loggedIn>
+            <button (click)="signout()" mat-raised-button>
+                Logout
+            </button>
+          </ng-template>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>

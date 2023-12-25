@@ -14,10 +14,15 @@ export class AuthService {
     this.authLogin(new firebase.default.auth.GoogleAuthProvider())
   }
 
-  private authLogin(provider: firebase.default.auth.AuthProvider) {
-    return this.afAuth.signInWithPopup(provider).then(res => {
-      console.log(res);
-    })
+  // private authLogin(provider: firebase.default.auth.AuthProvider) {
+  //   return this.afAuth.signInWithPopup(provider).then(res => {
+  //     console.log(res);
+  //   })
+  // }
+
+  private async authLogin(provider: firebase.default.auth.AuthProvider) {
+    const res = await this.afAuth.signInWithPopup(provider);
+    console.log(res);
   }
 
 }

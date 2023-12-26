@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   public signInWithGoogle() {
-    this.authLogin(new firebase.default.auth.GoogleAuthProvider())
+    this.authLogin(new firebase.default.auth.GoogleAuthProvider());
   }
 
   // The logout of firebase isn't part of Angular,
@@ -60,7 +60,9 @@ export class AuthService {
 
   private async authLogin(provider: firebase.default.auth.AuthProvider) {
     const res = await this.afAuth.signInWithPopup(provider);
+    this.isLoggedIn$.next(true);
     this.setUserData(res.user as User);
+    this.router.navigate(["chat"]);
   }
 
   private setUserData(user: User){

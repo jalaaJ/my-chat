@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
-import { IChatRoom } from '../models';
+import { IChatRoom, IMessage } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +9,9 @@ import { IChatRoom } from '../models';
 export class ChatService {
 
   /* 
-   - get rooms
+   - get rooms - done
    - add room
-   - get room messages
+   - get room messages - processing
    - send message
    - delete room
    - 
@@ -25,6 +25,20 @@ export class ChatService {
         const id = snap.payload.doc.id;
         const data: IChatRoom = <IChatRoom> snap.payload.doc.data();
         return <IChatRoom>{
+          ...data,
+          id
+        }
+      })
+    }))
+  }
+
+  public getRoomMessages(roomId: string): Observable<Array<IMessage>> {
+    return this.db.collection('rooms').doc(roomId).collection("messages").snapshotChanges()
+    .pipe(map(messages => {
+      return messages.map(message => {
+        const data: IMessage = <IMessage> message.payload.doc.data();
+        const id = message.payload.doc.id;
+        return <IMessage> {
           ...data,
           id
         }

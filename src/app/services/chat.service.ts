@@ -10,9 +10,9 @@ export class ChatService {
 
   /* 
    - get rooms - done
-   - add room - in progress
+   - add room - done
    - get room messages - done
-   - send message
+   - send message - in progress
    - delete room
    - 
   */
@@ -46,10 +46,18 @@ export class ChatService {
     }))
   }
 
-  public addRoom(room_Name: string, userId: string): void{
+  public addRoom(room_Name: string, userId: string): void {
     this.db.collection("rooms").add({
       roomName: room_Name,
       createdUserId: userId
+    })
+  }
+
+  public sendMessage(userId: string, body: string, roomId: string): void {
+    this.db.collection("rooms").doc(roomId).collection('messages').add({
+      userId,
+      timestamp: new Date().getTime(),
+      body 
     })
   }
 

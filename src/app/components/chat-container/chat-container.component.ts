@@ -17,6 +17,8 @@ export class ChatContainerComponent implements OnInit{
   public rooms$: Observable<Array<IChatRoom>> | undefined;
   public messages$: Observable<Array<IMessage>> | undefined;
   private userId: string = "";
+  private roomId: string = "";
+  private updatedRoomId: string = "";
 
   constructor(private chatService: ChatService, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private authService: AuthService) {}
 
@@ -27,16 +29,20 @@ export class ChatContainerComponent implements OnInit{
       })
 
       this.rooms$ = this.chatService.getRooms();
+
       // This is the initial id
-      const roomId = this.activatedRoute.snapshot.url[1].path
-      this.messages$ = this.chatService.getRoomMessages(roomId);
+      if(this.activatedRoute.snapshot.url.length > 1) {
+        this.roomId = this.activatedRoute.snapshot.url[1].path;
+        this.messages$ = this.chatService.getRoomMessages(this.roomId);
+      }
+
       // This method is to get the id on every event change in the router
       this.router.events.pipe(filter(data => data instanceof(NavigationEnd))).subscribe(data => {
         const routerEvent: RouterEvent = <RouterEvent> data;
         const urlArray = routerEvent.url.split("/");
         if(urlArray.length > 2) {
-          const updatedRoomId = urlArray[2]
-          this.messages$ = this.chatService.getRoomMessages(updatedRoomId);
+          this.updatedRoomId = urlArray[2]
+          this.messages$ = this.chatService.getRoomMessages(this.updatedRoomId);
         }
       })
   }
@@ -54,4 +60,11 @@ export class ChatContainerComponent implements OnInit{
   public onAddRoom(roomName: string, userId: string): void {
     this.chatService.addRoom(roomName, userId);
   }
+
+  public onSendMessage(message: string): void {
+    if(this.userId && this.roomId) {
+      this.chatService.sendMessage(this.userId, message, this.updatedRoomId);
+    }
+  }
 }
+

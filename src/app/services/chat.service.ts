@@ -20,10 +20,10 @@ export class ChatService {
   constructor(private db: AngularFirestore) { }
 
   public getRooms(): Observable<Array<IChatRoom>> {
-    return this.db.collection('rooms').snapshotChanges().pipe(map(snaps => {
-      return snaps.map(snap => {
-        const id = snap.payload.doc.id;
-        const data: IChatRoom = <IChatRoom> snap.payload.doc.data();
+    return this.db.collection('rooms').snapshotChanges().pipe(map(rooms => {
+      return rooms.map(room => {
+        const id = room.payload.doc.id;
+        const data: IChatRoom = <IChatRoom> room.payload.doc.data();
         return <IChatRoom>{
           ...data,
           id

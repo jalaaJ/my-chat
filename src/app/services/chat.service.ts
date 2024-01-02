@@ -54,11 +54,15 @@ export class ChatService {
   }
 
   public sendMessage(userId: string, body: string, roomId: string): void {
-    this.db.collection("rooms").doc(roomId).collection('messages').add({
-      userId,
-      timestamp: new Date().getTime(),
-      body 
-    })
+    if(roomId)
+    {
+      this.db.collection("rooms").doc(roomId).collection('messages').add({
+        userId,
+        timestamp: new Date().getTime(),
+        body 
+      })
+    }
+    
   }
 
 }

@@ -29,11 +29,6 @@ export class ChatContainerComponent implements OnInit{
         this.userId = <string> user?.uid;
       })
 
-      this.router.events.pipe(filter(routerEvent => routerEvent instanceof ActivationEnd)).subscribe(data => {
-        const routeEvent = data as ActivationEnd;
-        this.roomId = routeEvent.snapshot.paramMap.get('roomId') || '';
-      })
-
       this.rooms$ = this.chatService.getRooms();
 
       // This is the initial id
@@ -41,6 +36,11 @@ export class ChatContainerComponent implements OnInit{
         this.roomId = this.activatedRoute.snapshot.url[1].path;
         this.messages$ = this.chatService.getRoomMessages(this.roomId);
       }
+
+      this.router.events.pipe(filter(routerEvent => routerEvent instanceof ActivationEnd)).subscribe(data => {
+        const routeEvent = data as ActivationEnd;
+        this.roomId = routeEvent.snapshot.paramMap.get('roomId') || '';
+      })
 
       // This method is to get the id on every event change in the router
        this.router.events.pipe(filter(data => data instanceof NavigationEnd)).subscribe( data => {

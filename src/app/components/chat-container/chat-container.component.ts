@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
-import { Observable, filter, pipe } from 'rxjs';
+import { ActivatedRoute, ActivationEnd, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { BehaviorSubject, Observable, filter, pipe } from 'rxjs';
 import { IChatRoom, IMessage } from 'src/app/models';
 import { ChatService } from 'src/app/services/chat.service';
 import { AddRoomComponent } from '../add-room/add-room.component';
@@ -19,13 +19,19 @@ export class ChatContainerComponent implements OnInit{
   private userId: string = "";
   private roomId: string = "";
   private updatedRoomId: string = "";
+  // private roomIdSubject = new BehaviorSubject<string>("");
 
   constructor(private chatService: ChatService, private router: Router, private activatedRoute: ActivatedRoute, public dialog: MatDialog, private authService: AuthService) {}
 
-  ngOnInit(): void {
+   ngOnInit(): void {
 
       this.authService.getUserData().pipe(filter(data => !!data)).subscribe(user => {
         this.userId = <string> user?.uid;
+      })
+
+      this.router.events.pipe(filter(routerEvent => routerEvent instanceof ActivationEnd)).subscribe(data => {
+        const routeEvent = data as ActivationEnd;
+        this.roomId = routeEvent.snapshot.paramMap.get('roomId') || '';
       })
 
       this.rooms$ = this.chatService.getRooms();
@@ -37,7 +43,7 @@ export class ChatContainerComponent implements OnInit{
       }
 
       // This method is to get the id on every event change in the router
-      this.router.events.pipe(filter(data => data instanceof(NavigationEnd))).subscribe(data => {
+       this.router.events.pipe(filter(data => data instanceof NavigationEnd)).subscribe( data => {
         const routerEvent: RouterEvent = <RouterEvent> data;
         const urlArray = routerEvent.url.split("/");
         if(urlArray.length > 2) {
@@ -45,6 +51,8 @@ export class ChatContainerComponent implements OnInit{
           this.messages$ = this.chatService.getRoomMessages(this.updatedRoomId);
         }
       })
+
+      
   }
 
   public openAddRoomModal(): void {

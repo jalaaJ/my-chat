@@ -1,0 +1,16 @@
+<div class="header">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+          <span class="header__spacer">My-Chat</span>
+          <button *ngIf="!(isLoggedIn); else loggedIn" (click)="signInWithGoogle()" mat-raised-button>
+            Login
+          </button>
+          <ng-template #loggedIn>
+            <a class="header__link" [routerLink]="['/chat']" routerLinkActive="router-link-active">Chat</a>
+            <button (click)="signout()" mat-raised-button>
+                Logout
+            </button>
+          </ng-template>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>

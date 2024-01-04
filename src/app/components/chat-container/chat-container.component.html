@@ -1,0 +1,14 @@
+<div class="chat-container">
+    <div class="chat-container__room-list" *ngIf="rooms$ | async as rooms">
+        <h2 style="margin-left: 1rem;">Rooms</h2>
+        <app-room-list [rooms]="rooms"></app-room-list>
+    </div>
+
+    <div class="chat-container__chat" *ngIf="messages$ | async as messages">
+        <app-chat [messages]="messages" (onSendMessage)="onSendMessage($event)"></app-chat>
+    </div>
+
+    <div class="chat-container__add-room">
+        <button type="button" mat-raised-button color="primary" (click)="openAddRoomModal()">Add room</button>
+    </div>
+</div>

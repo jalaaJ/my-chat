@@ -17,6 +17,8 @@ export class AuthService {
   // so we use Subject instead of BehaviorSubject
   private userDetails$: Subject<User | undefined> = new Subject<User | undefined>();
 
+  private userId: string = '';
+
   constructor(private afstore: AngularFirestore, private afAuth: AngularFireAuth, private router: Router) {
 
     const savedUserString: string | null = localStorage.getItem('user');
@@ -25,11 +27,11 @@ export class AuthService {
     }
 
     afAuth.authState.subscribe(user => {
-      if(user) {
+      if(!!user) {
 
         // This user a firebase user, so we cast it into User
         this.userDetails$.next(user as User);
-
+        this.userId = user.uid;
         const userString: string = JSON.stringify(user);
         localStorage.setItem("user", userString)
         this.isLoggedIn$.next(true);
@@ -60,6 +62,10 @@ export class AuthService {
 
   public getUserData(): Observable<User | undefined> {
     return this.userDetails$.asObservable();
+  }
+
+  public getUserId(): string {
+    return this.userId;
   }
 
   private async authLogin(provider: firebase.default.auth.AuthProvider) {

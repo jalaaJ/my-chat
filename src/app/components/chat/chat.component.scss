@@ -1,10 +1,14 @@
 .chat__messages {
     height: 318px;
     width: 100%;
+    padding: 0 4px;
 }
 
 .chat__message {
-    height: 50px;
+    min-height: 20px;
+    border-radius: 5px;
+    margin: 5px 0;
+    padding: 10px;
 }
 
 .chat__form {
@@ -12,6 +16,44 @@
     height: 79px;
     button {
         margin-top: 6px;
+    }
+}
+
+.chat__message--current-user {
+    background: #f3eeee;
+    margin-right: 30px;
+    position: relative;
+    &:after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 0px solid transparent;
+        border-right: 18px solid transparent;
+        border-bottom: 20px solid #f3eeee;
+        display: block;
+        transform: rotate(90deg);
+        position: absolute;
+        top: -1px;
+        right: -15px;
+    }
+}
+
+.chat__message--other-user {
+    background: #91f095;
+    margin-right: 30px;
+    position: relative;
+    &:after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-left: 0px solid transparent;
+        border-right: 18px solid transparent;
+        border-bottom: 20px solid #91f095;
+        display: block;
+        transform: rotate(90deg);
+        position: absolute;
+        top: -1px;
+        right: -15px;
     }
 }
 

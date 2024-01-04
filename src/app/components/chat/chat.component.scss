@@ -1,11 +1,29 @@
 .chat__messages {
-    height: 200px;
-    width: 200px;
-    border: 1px solid black;
+    height: 318px;
+    width: 100%;
 }
 
 .chat__message {
     height: 50px;
+}
+
+.chat__form {
+    display: flex;
+    height: 79px;
+    button {
+        margin-top: 6px;
+    }
+}
+
+.chat {
+    #case {height: 560px; width: 277px; border-radius: 40px 40px; border: 1px solid #000; margin: auto;}
+    #earsection {margin-top: 36px; margin-left: 72px; height: 16px;}
+    #camera {float: left; width: 16px; height: 16px; border: 1px solid #000; border-radius: 9px 9px;}
+    #speaker {float: left; width: 54px; height: 5px; margin-left: 15px; border: 1px solid #000; border-radius: 7px 7px;}
+    #screen {clear: both; width: 250px; height: 374px; margin: auto; margin-top: 35px; border: 1px solid #000;}
+    #screen iframe {border: none; width: 100%; height: 100%}
+    #button {height: 56px; width: 56px; border: 1px solid #000; border-radius: 28px 28px; margin: auto; margin-top: 22px;}
+    #buttonsquare {height: 17px; width: 17px; border: 1px solid #000; border-radius: 5px; margin: auto; margin-top: 18px; }
 }
 
 .chat::ng-deep {
@@ -13,3 +31,4 @@
         height: 100%;
     }
 }
+
